@@ -56,11 +56,14 @@ test.describe('Inventory & Cart Tests', () => {
  test('sort products by price low to high', async ({ page }) => {
     const inventoryPage = new InventoryPage(page);
     await inventoryPage.sortBy('lohi');
-    await page.waitForTimeout(1000);
-    const prices = await page.locator('.inventory_item_price').allTextContents();
+    await page.waitForTimeout(1500);
+    const priceElements = page.locator('.inventory_item_price');
+    await priceElements.first().waitFor();
+    const prices = await priceElements.allTextContents();
     const numeric = prices.map(p => parseFloat(p.replace('$', '')));
-    const sorted = [...numeric].sort((a, b) => a - b);
-    expect(numeric).toEqual(sorted);
+    for (let i = 0; i < numeric.length - 1; i++) {
+      expect(numeric[i]).toBeLessThanOrEqual(numeric[i + 1]);
+    }
   });
 
-});
+
