@@ -53,12 +53,14 @@ test.describe('Inventory & Cart Tests', () => {
     expect(count).toBe(0);
   });
 
-  test('sort products by price low to high', async ({ page }) => {
+ test('sort products by price low to high', async ({ page }) => {
     const inventoryPage = new InventoryPage(page);
     await inventoryPage.sortBy('lohi');
+    await page.waitForTimeout(1000);
     const prices = await page.locator('.inventory_item_price').allTextContents();
     const numeric = prices.map(p => parseFloat(p.replace('$', '')));
-    expect(numeric).toEqual([...numeric].sort((a, b) => a - b));
+    const sorted = [...numeric].sort((a, b) => a - b);
+    expect(numeric).toEqual(sorted);
   });
 
 });
