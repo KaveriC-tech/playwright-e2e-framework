@@ -53,10 +53,9 @@ test.describe('Inventory & Cart Tests', () => {
     expect(count).toBe(0);
   });
 
- test('sort products by price low to high', async ({ page }) => {
+  test('sort products by price low to high', async ({ page }) => {
     const inventoryPage = new InventoryPage(page);
     await inventoryPage.sortBy('lohi');
-    await page.waitForTimeout(1500);
     const priceElements = page.locator('.inventory_item_price');
     await priceElements.first().waitFor();
     const prices = await priceElements.allTextContents();
@@ -66,4 +65,4 @@ test.describe('Inventory & Cart Tests', () => {
     }
   });
 
-
+});
